@@ -40,7 +40,7 @@ Return your response in bullet points. Use simple, professional language.
 """
 
     response = client.chat.completions.create(
-        model="gpt-4",
+        model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You are a helpful data science assistant."},
             {"role": "user", "content": prompt}
