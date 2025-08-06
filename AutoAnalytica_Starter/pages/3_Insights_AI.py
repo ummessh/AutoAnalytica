@@ -1,5 +1,4 @@
 # 3 Insights AI
-# 3 Insights AI
 import streamlit as st
 import pandas as pd
 import openai
@@ -7,22 +6,35 @@ import os
 
 st.title("🧠 AI-Generated Data Insights")
 
-# Load Data
+# Load Cleaned Data
 if "cleaned_df" not in st.session_state:
     st.warning("⚠️ No cleaned data found. Please upload and clean a dataset first.")
     st.stop()
 
 df = st.session_state["cleaned_df"]
 
-# OpenAI Key
+# 🔧 Ensure df is Arrow-compatible for Streamlit
+df = df.convert_dtypes()
+df = df.infer_objects()
+
+# ✅ Optional: Show DataFrame if needed
+# st.dataframe(df)
+
+# 🔐 OpenAI API Key from environment
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Prepare system + user prompt
+# ✅ GPT Insight Generator
 @st.cache_data(show_spinner=True)
 def generate_gpt_insight(data: pd.DataFrame) -> str:
-    # summarize data
+    # Summary of all columns (numeric + categorical)
     summary = data.describe(include='all').to_string()
-    correlation = data.corr().to_string()
+
+    # Correlation matrix only for numeric columns
+    numeric_df = data.select_dtypes(include='number')
+    if not numeric_df.empty:
+        correlation = numeric_df.corr().to_string()
+    else:
+        correlation = "No numeric columns to compute correlation."
 
     prompt = f"""
 You are a senior data analyst. Analyze the following dataset based on its summary and correlation table.
@@ -48,7 +60,7 @@ Return your response in bullet points. Use simple, professional language.
 
     return response["choices"][0]["message"]["content"]
 
-# Generate Insights
+# 🔍 Button to Generate Insights
 if st.button("🔍 Generate Insights with AI"):
     with st.spinner("Analyzing data using GPT..."):
         insights = generate_gpt_insight(df)
