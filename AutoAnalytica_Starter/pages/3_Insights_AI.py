@@ -1,28 +1,20 @@
-# 3 Insights AI
 import streamlit as st
 import pandas as pd
-import openai
 import os
+from openai import OpenAI
 
 st.title("🧠 AI-Generated Data Insights")
 
-# Load Cleaned Data
 if "cleaned_df" not in st.session_state:
     st.warning("⚠️ No cleaned data found. Please upload and clean a dataset first.")
     st.stop()
 
 df = st.session_state["cleaned_df"]
-
-# 🔧 Ensure df is Arrow-compatible for Streamlit
 df = df.convert_dtypes()
 df = df.infer_objects()
 
-# ✅ Optional: Show DataFrame if needed
-# st.dataframe(df)
-
-from openai import OpenAI
-
-client = OpenAI(api_key=openai.api_key)
+# 🔐 Load API key from environment
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 @st.cache_data(show_spinner=True)
 def generate_gpt_insight(data: pd.DataFrame) -> str:
@@ -58,7 +50,6 @@ Return your response in bullet points. Use simple, professional language.
 
     return response.choices[0].message.content
 
-# 🔍 Button to Generate Insights
 if st.button("🔍 Generate Insights with AI"):
     with st.spinner("Analyzing data using GPT..."):
         insights = generate_gpt_insight(df)
