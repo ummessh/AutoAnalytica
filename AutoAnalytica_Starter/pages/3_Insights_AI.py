@@ -20,16 +20,14 @@ df = df.infer_objects()
 # ✅ Optional: Show DataFrame if needed
 # st.dataframe(df)
 
-# 🔐 OpenAI API Key from environment
-openai.api_key = os.getenv("OPENAI_API_KEY")
+from openai import OpenAI
 
-# ✅ GPT Insight Generator
+client = OpenAI(api_key=openai.api_key)
+
 @st.cache_data(show_spinner=True)
 def generate_gpt_insight(data: pd.DataFrame) -> str:
-    # Summary of all columns (numeric + categorical)
     summary = data.describe(include='all').to_string()
 
-    # Correlation matrix only for numeric columns
     numeric_df = data.select_dtypes(include='number')
     if not numeric_df.empty:
         correlation = numeric_df.corr().to_string()
@@ -47,9 +45,9 @@ Find 3-5 key insights that would help a business make decisions.
 {correlation}
 
 Return your response in bullet points. Use simple, professional language.
-    """
+"""
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4",
         messages=[
             {"role": "system", "content": "You are a helpful data science assistant."},
@@ -58,7 +56,7 @@ Return your response in bullet points. Use simple, professional language.
         temperature=0.4
     )
 
-    return response["choices"][0]["message"]["content"]
+    return response.choices[0].message.content
 
 # 🔍 Button to Generate Insights
 if st.button("🔍 Generate Insights with AI"):
