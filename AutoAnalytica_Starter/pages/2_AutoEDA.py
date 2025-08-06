@@ -8,8 +8,6 @@ import missingno as msno
 import plotly.express as px
 from io import BytesIO
 
-st.set_option('deprecation.showPyplotGlobalUse', False)
-
 st.title("📊 Auto Exploratory Data Analysis (EDA)")
 
 # Check if data exists
