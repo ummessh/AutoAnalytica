@@ -32,10 +32,10 @@ for col, invalids in invalid_map.items():
 
 def sanitize_dataframe(df):
     for col in df.columns:
-        try:
-            df[col] = df[col].apply(lambda x: str(x) if isinstance(x, (list, dict, set, tuple)) else x)
-        except Exception:
-            df[col] = df[col].astype(str)
+        if df[col].dtype == 'object':
+            df[col] = df[col].astype(str)  # Force all objects to string
+        elif df[col].apply(lambda x: isinstance(x, (list, dict, set, tuple))).any():
+            df[col] = df[col].apply(str)  # Handle mixed or complex types
     return df
 
 # Store cleaned version back (optional)
@@ -59,7 +59,7 @@ else:
 
 with st.container():
     fig, ax = plt.subplots()
-    msno.matrix(df, ax=ax)
+    msno.matrix(df, ax=ax, sparkline=False)
     st.pyplot(fig)
 
 # Section 3: Summary Stats
