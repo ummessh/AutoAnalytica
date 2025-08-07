@@ -19,7 +19,7 @@ if 'uploaded_df' in st.session_state:
     st.markdown("### 📊 Basic Stats")
     st.write(df.describe())
 else:
-    st.warning("⚠️ No file uploaded. Please go to 'Upload Data' and upload a CSV."
+    st.warning("⚠️ No file uploaded. Please go to 'Upload Data' and upload a CSV.")
 
 # Section 1: Basic Info
 st.subheader("📌 Dataset Overview")
