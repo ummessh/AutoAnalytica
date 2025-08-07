@@ -15,7 +15,7 @@ if uploaded_file:
             df = pd.read_excel(uploaded_file)
         
         st.subheader("🔍 Preview of Uploaded Data")
-        st.dataframe(df.head())
+        st.dataframe(df))
 
         # Cleaning Summary
         st.subheader("🧼 Data Cleaning Summary")
