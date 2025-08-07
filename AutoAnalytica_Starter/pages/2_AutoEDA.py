@@ -30,9 +30,17 @@ for col, invalids in invalid_map.items():
     if col in df.columns:
         df[col] = df[col].replace(invalids, nan)
 
+def sanitize_dataframe(df):
+    for col in df.columns:
+        try:
+            df[col] = df[col].apply(lambda x: str(x) if isinstance(x, (list, dict, set, tuple)) else x)
+        except Exception:
+            df[col] = df[col].astype(str)
+    return df
+
 # Store cleaned version back (optional)
-st.session_state['uploaded_df'] = df
-# -----------------------------------
+df = sanitize_dataframe(df)
+st.session_state['cleaned_df'] = df  # Store for Insights AI or DataChatbot
 
 # Section 1: Basic Info
 st.subheader("📌 Dataset Overview")
