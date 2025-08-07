@@ -1,5 +1,4 @@
 # 2 AutoEDA
-# 2 AutoEDA
 import streamlit as st
 import pandas as pd
 import seaborn as sns
@@ -10,12 +9,17 @@ from io import BytesIO
 
 st.title("📊 Auto Exploratory Data Analysis (EDA)")
 
-# Check if data exists
-if "cleaned_df" not in st.session_state:
-    st.warning("⚠️ No cleaned data found. Please upload and clean a dataset first.")
-    st.stop()
+if 'uploaded_df' in st.session_state:
+    df = st.session_state['uploaded_df']
+    st.success(f"Using uploaded file: {st.session_state.get('uploaded_filename', 'Unnamed')}")
+    st.dataframe(df.head())
 
-df = st.session_state["cleaned_df"]
+    # Perform EDA (e.g., using pandas-profiling or sweetviz)
+    # Example: show some stats
+    st.markdown("### 📊 Basic Stats")
+    st.write(df.describe())
+else:
+    st.warning("⚠️ No file uploaded. Please go to 'Upload Data' and upload a CSV."
 
 # Section 1: Basic Info
 st.subheader("📌 Dataset Overview")
