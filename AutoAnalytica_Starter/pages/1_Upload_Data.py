@@ -44,5 +44,5 @@ if uploaded_file is not None:
         st.success(f"✅ Nulls filled with {fill_null_value.lower()}.")
 
     st.markdown("#### ✅ Final Cleaned Data Preview")
-    st.dataframe(df.head())
+    st.dataframe(df)
 
