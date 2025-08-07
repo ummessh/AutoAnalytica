@@ -20,7 +20,9 @@ if uploaded_file is not None:
     if len(missing_dict) == 0:
         st.info("✅ No missing values found in the dataset.")
     else:
-        st.json(missing_dict)
+        st.markdown("#### 🔎 Null values in each column:")
+        for col, count in missing_dict.items():
+            st.markdown(f"- **{col}**: {count} null values")
 
     # 🔧 Cleaning Options
     st.markdown("### ⚙️ Apply Cleaning Options")
