@@ -7,9 +7,13 @@ uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
 
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
+
+    # Store the dataframe in session state
+    st.session_state['uploaded_df'] = df
     
-    st.markdown(f"### 📄 **{uploaded_file.name}**")
-    st.markdown("#### 🔍 Preview of Uploaded Data")
+    st.session_state['uploaded_filename'] = uploaded_file.name
+
+    st.success("✅ File uploaded successfully and stored in session.")
     st.dataframe(df)
 
     # 🧼 Data Cleaning Summary
