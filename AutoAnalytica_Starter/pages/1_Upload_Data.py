@@ -10,7 +10,7 @@ if uploaded_file is not None:
     
     st.markdown(f"### 📄 **{uploaded_file.name}**")
     st.markdown("#### 🔍 Preview of Uploaded Data")
-    st.dataframe(df.head())
+    st.dataframe(df)
 
     # 🧼 Data Cleaning Summary
     st.markdown("### 🧼 Data Cleaning Summary")
