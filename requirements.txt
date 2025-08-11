@@ -8,3 +8,4 @@ langchain
 scikit-learn
 plotly
 missingno
+pandasai==2.0.23
