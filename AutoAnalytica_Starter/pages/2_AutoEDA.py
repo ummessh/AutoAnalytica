@@ -35,6 +35,9 @@ def sanitize_dataframe(df):
             df[col] = df[col].astype(str)  # Force all objects to string
         elif df[col].apply(lambda x: isinstance(x, (list, dict, set, tuple))).any():
             df[col] = df[col].apply(str)  # Handle mixed or complex types
+        # Additional handling for specific columns
+        if col == 'Name':
+            df[col] = df[col].apply(lambda x: str(x) if pd.notnull(x) else 'Unknown')  # Handle missing values
     return df
 
 # Store cleaned version back (optional)
