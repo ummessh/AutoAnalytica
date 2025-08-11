@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import os
 import time
-from openai import OpenAI, RateLimitError
+from openai import OpenAI, RateLimitError, APIError
 
 st.title("🧠 AI-Generated Data Insights")
 
@@ -58,9 +58,29 @@ Return your response in bullet points, using simple and professional language.
             return response.choices[0].message.content
         except RateLimitError:
             wait_time = (2 ** attempt) * 2  # exponential backoff
+            st.warning(f"⚠️ API rate limit hit. Retrying in {wait_time} seconds...")
             time.sleep(wait_time)
+        except APIError as e:
+            if "insufficient_quota" in str(e):
+                return "❌ Your OpenAI quota has been exceeded. Please check your plan or billing details."
+            else:
+                return f"⚠️ API Error: {e}"
 
     return "⚠️ API rate limit reached multiple times. Please try again later."
+
+# Example question suggestions
+example_questions = [
+    "Which columns have the strongest correlation?",
+    "Are there any surprising trends in the data?",
+    "Which factors seem most related to the target variable?",
+    "What patterns stand out in the numerical data?",
+    "Are there any anomalies or unusual values?"
+]
+
+with st.expander("💡 Example Questions to Ask the AI"):
+    st.write("Here are some ideas to get you started:")
+    for q in example_questions:
+        st.markdown(f"- {q}")
 
 # Only run on button click
 if st.button("🔍 Generate Insights with AI"):
