@@ -19,7 +19,6 @@ df = st.session_state['uploaded_df']
 st.success(f"Using uploaded file: {st.session_state.get('uploaded_filename', 'Unnamed')}")
 st.dataframe(df.head(), use_container_width=True)
 
-# -----------------------------------
 # 🧼 CLEANING invalid values as NaN
 invalid_map = {
     "Age": [177],
