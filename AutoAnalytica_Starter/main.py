@@ -3,7 +3,9 @@ import streamlit as st
 # Page config
 st.set_page_config(page_title="AutoAnalytica", page_icon="🔍", layout="wide")
 
-# Hero Section
+# -------------------
+# MAIN HERO SECTION
+# -------------------
 st.title("Welcome to AutoAnalytica! 🔍")
 st.markdown(
     """
@@ -12,36 +14,43 @@ st.markdown(
     """
 )
 
-# Action Buttons (links instead of switch_page)
+# -------------------
+# BUTTON NAVIGATION
+# -------------------
+# Map of Button Label -> Page Name (matches sidebar label from page title)
+page_links = {
+    "📤 Upload Your Dataset": "Upload Data",
+    "📊 Try Demo Data": "AutoEDA"
+}
+
 col1, col2 = st.columns(2)
 
-with col1:
-    st.markdown(
-        """
-        <a href="./UploadData" target="_self">
-            <button style="background-color:#4CAF50; color:white; padding:10px 18px; border:none; border-radius:6px; font-size:16px; cursor:pointer;">
-                📤 Upload Your Dataset
-            </button>
-        </a>
-        """,
-        unsafe_allow_html=True
-    )
-
-with col2:
-    st.markdown(
-        """
-        <a href="./AutoEDA" target="_self">
-            <button style="background-color:#2196F3; color:white; padding:10px 18px; border:none; border-radius:6px; font-size:16px; cursor:pointer;">
-                📊 Try Demo Data
-            </button>
-        </a>
-        """,
-        unsafe_allow_html=True
-    )
+for i, (label, page_name) in enumerate(page_links.items()):
+    button_html = f"""
+    <a href="./{page_name.replace(' ', '%20')}" target="_self">
+        <button style="
+            background-color:{'#4CAF50' if i == 0 else '#2196F3'};
+            color:white;
+            padding:10px 18px;
+            border:none;
+            border-radius:6px;
+            font-size:16px;
+            cursor:pointer;
+        ">
+            {label}
+        </button>
+    </a>
+    """
+    if i == 0:
+        col1.markdown(button_html, unsafe_allow_html=True)
+    else:
+        col2.markdown(button_html, unsafe_allow_html=True)
 
 st.markdown("---")
 
-# How It Works
+# -------------------
+# HOW IT WORKS
+# -------------------
 st.subheader("⚡ How It Works")
 steps = [
     "1️⃣ **Upload or Connect Data** — CSV, Excel, SQL, or Google Sheets.",
@@ -53,7 +62,9 @@ for step in steps:
 
 st.markdown("---")
 
-# Feature Cards
+# -------------------
+# FEATURES
+# -------------------
 st.subheader("✨ Key Features")
 feature_cols = st.columns(4)
 features = [
@@ -68,7 +79,9 @@ for i, (title, desc) in enumerate(features):
 
 st.markdown("---")
 
-# Footer
+# -------------------
+# FOOTER
+# -------------------
 st.markdown(
     """
     ---
