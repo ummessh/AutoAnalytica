@@ -9,3 +9,5 @@ scikit-learn
 plotly
 missingno
 pandasai==2.0.23
+prophet
+pystan==2.19.1.1
