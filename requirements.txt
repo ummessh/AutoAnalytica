@@ -1,6 +1,6 @@
 streamlit
-pandasai
 numpy
+pandas
 matplotlib
 seaborn
 openai
