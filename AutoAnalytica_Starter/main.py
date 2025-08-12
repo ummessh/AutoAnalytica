@@ -1,7 +1,6 @@
 import streamlit as st
-from PIL import Image
 
-# Page Config
+# Page config
 st.set_page_config(page_title="AutoAnalytica", page_icon="🔍", layout="wide")
 
 # Hero Section
@@ -13,15 +12,32 @@ st.markdown(
     """
 )
 
-# Action Buttons
+# Action Buttons (links instead of switch_page)
 col1, col2 = st.columns(2)
+
 with col1:
-    if st.button("📤 Upload Your Dataset"):
-        st.switch_page("pages/UploadData.py")  # Adjust path if needed
+    st.markdown(
+        """
+        <a href="./UploadData" target="_self">
+            <button style="background-color:#4CAF50; color:white; padding:10px 18px; border:none; border-radius:6px; font-size:16px; cursor:pointer;">
+                📤 Upload Your Dataset
+            </button>
+        </a>
+        """,
+        unsafe_allow_html=True
+    )
+
 with col2:
-    if st.button("📊 Try Demo Data"):
-        st.session_state['demo_data'] = True
-        st.switch_page("pages/AutoEDA.py")  # Adjust path if needed
+    st.markdown(
+        """
+        <a href="./AutoEDA" target="_self">
+            <button style="background-color:#2196F3; color:white; padding:10px 18px; border:none; border-radius:6px; font-size:16px; cursor:pointer;">
+                📊 Try Demo Data
+            </button>
+        </a>
+        """,
+        unsafe_allow_html=True
+    )
 
 st.markdown("---")
 
@@ -52,18 +68,11 @@ for i, (title, desc) in enumerate(features):
 
 st.markdown("---")
 
-# Demo Section
-st.subheader("🎥 See AutoAnalytica in Action")
-demo_gif = "demo.gif"  # Replace with actual file path
-try:
-    st.image(demo_gif, caption="Your data. Your insights. Instantly.")
-except:
-    st.info("Demo video/GIF coming soon!")
-
 # Footer
 st.markdown(
     """
     ---
     Built with ❤️ using Streamlit | [GitHub Repo](https://github.com/) | [Documentation](#)
-    """
+    """,
+    unsafe_allow_html=True
 )
