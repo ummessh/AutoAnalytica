@@ -3,12 +3,20 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
-from cmdstan_prophet import Prophet
 import plotly.express as px
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, mean_squared_error, r2_score
+
+# Try importing Prophet from either package
+try:
+    from prophet import Prophet
+except ModuleNotFoundError:
+    try:
+        from cmdstan_prophet import Prophet
+    except ModuleNotFoundError:
+        Prophet = None
 
 st.set_page_config(layout="wide")
 st.title("📊 Strategy Builder: ML Models")
@@ -38,34 +46,42 @@ with tab1:
         df_cluster = df[[x_col, y_col]].dropna().copy()
         df_cluster["Cluster"] = kmeans.fit_predict(df_cluster[[x_col, y_col]])
 
-        fig = px.scatter(df_cluster, x=x_col, y=y_col, color=df_cluster["Cluster"].astype(str),
-                         title=f"KMeans Clustering ({x_col} vs {y_col})")
+        fig = px.scatter(
+            df_cluster, x=x_col, y=y_col, color=df_cluster["Cluster"].astype(str),
+            title=f"KMeans Clustering ({x_col} vs {y_col})"
+        )
         st.plotly_chart(fig, use_container_width=True)
 
 # ------------ TAB 2: Time Series Forecasting ------------
 with tab2:
     st.subheader("📈 Prophet Time Series Forecast")
 
-    date_col = st.selectbox("Select date column", df.columns)
-    metric_col = st.selectbox("Select value to forecast", df.select_dtypes(include=["int64", "float64"]).columns)
+    if Prophet is None:
+        st.error("❌ Neither `prophet` nor `cmdstan-prophet` is installed. Please update requirements.txt.")
+    else:
+        date_col = st.selectbox("Select date column", df.columns)
+        metric_col = st.selectbox(
+            "Select value to forecast",
+            df.select_dtypes(include=["int64", "float64"]).columns
+        )
 
-    if st.button("Forecast"):
-        try:
-            df_prophet = df[[date_col, metric_col]].dropna().copy()
-            df_prophet[date_col] = pd.to_datetime(df_prophet[date_col])
-            df_prophet = df_prophet.rename(columns={date_col: "ds", metric_col: "y"})
+        if st.button("Forecast"):
+            try:
+                df_prophet = df[[date_col, metric_col]].dropna().copy()
+                df_prophet[date_col] = pd.to_datetime(df_prophet[date_col])
+                df_prophet = df_prophet.rename(columns={date_col: "ds", metric_col: "y"})
 
-            model = Prophet()
-            model.fit(df_prophet)
+                model = Prophet()
+                model.fit(df_prophet)
 
-            future = model.make_future_dataframe(periods=30)
-            forecast = model.predict(future)
+                future = model.make_future_dataframe(periods=30)
+                forecast = model.predict(future)
 
-            fig = px.line(forecast, x='ds', y='yhat', title='📈 Forecasted Values (30 days ahead)')
-            st.plotly_chart(fig, use_container_width=True)
+                fig = px.line(forecast, x='ds', y='yhat', title='📈 Forecasted Values (30 days ahead)')
+                st.plotly_chart(fig, use_container_width=True)
 
-        except Exception as e:
-            st.error(f"❌ Forecast failed: {e}")
+            except Exception as e:
+                st.error(f"❌ Forecast failed: {e}")
 
 # ------------ TAB 3: Machine Learning Models ------------
 with tab3:
@@ -74,7 +90,10 @@ with tab3:
     task = st.selectbox("Select Task Type", ["Classification", "Regression"])
 
     target_col = st.selectbox("🎯 Select Target Column", df.columns)
-    feature_cols = st.multiselect("🧠 Select Feature Columns (inputs)", [col for col in df.columns if col != target_col])
+    feature_cols = st.multiselect(
+        "🧠 Select Feature Columns (inputs)",
+        [col for col in df.columns if col != target_col]
+    )
 
     if st.button("🚀 Train Model"):
         try:
