@@ -41,12 +41,12 @@ col1, col2 = st.columns(2)
 with col1:
     if st.button("📤 Upload Your Dataset"):
         st.session_state.nav_target = "Upload Data"
-        st.experimental_rerun()
+        st.rerun()  # updated for new Streamlit
 
 with col2:
     if st.button("📊 Try Demo Data"):
         st.session_state.nav_target = "AutoEDA"
-        st.experimental_rerun()
+        st.rerun()  # updated for new Streamlit
 
 st.markdown("---")
 
