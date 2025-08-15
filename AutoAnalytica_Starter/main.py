@@ -3,49 +3,39 @@ import streamlit as st
 # Page config
 st.set_page_config(page_title="AutoAnalytica", page_icon="🔍", layout="wide")
 
-# -------------------
-# MAIN HERO SECTION
-# -------------------
-st.title("Welcome to AutoAnalytica! 🔍")
-st.markdown(
-    """
-    **Your AI-powered data partner — Upload. Explore. Predict. Decide.**  
-    Upload your data, run instant analysis, forecast trends, and get AI-generated insights — all in one place.  
-    """
-)
+# Hide sidebar (optional)
+hide_sidebar_style = """
+    <style>
+        [data-testid="stSidebar"] { display: none; }
+    </style>
+"""
+st.markdown(hide_sidebar_style, unsafe_allow_html=True)
 
-# -------------------
-# BUTTON NAVIGATION
-# -------------------
+# Hero section
+st.title("Welcome to AutoAnalytica! 🔍")
+st.markdown("""
+**Your AI-powered data partner — Upload. Explore. Predict. Decide.**  
+Upload your data, run instant analysis, forecast trends, and get AI-generated insights — all in one place.
+""")
+
+# Navigation buttons
 col1, col2 = st.columns(2)
 
-# Note: Page names must match your `pages/` folder filenames exactly
-upload_page_url = "./Upload%20Data"
-demo_page_url = "./AutoEDA"
-
 with col1:
-    st.markdown(
-        f'<a href="{upload_page_url}" target="_self">'
-        '<button style="background-color:#4CAF50;color:white;padding:10px 18px;'
-        'border:none;border-radius:6px;font-size:16px;cursor:pointer;width:100%;">'
-        '📤 Upload Your Dataset</button></a>',
-        unsafe_allow_html=True
-    )
+    if st.button("📤 Upload Your Dataset"):
+        st.session_state.page = "Upload Data"
 
 with col2:
-    st.markdown(
-        f'<a href="{demo_page_url}" target="_self">'
-        '<button style="background-color:#2196F3;color:white;padding:10px 18px;'
-        'border:none;border-radius:6px;font-size:16px;cursor:pointer;width:100%;">'
-        '📊 Try Demo Data</button></a>',
-        unsafe_allow_html=True
-    )
+    if st.button("📊 Try Demo Data"):
+        st.session_state.page = "AutoEDA"
+
+# If user clicked a button, rerun on that page
+if "page" in st.session_state:
+    st.switch_page(f"pages/{st.session_state.page}.py")
 
 st.markdown("---")
 
-# -------------------
-# HOW IT WORKS
-# -------------------
+# How it works
 st.subheader("⚡ How It Works")
 steps = [
     "1️⃣ **Upload or Connect Data** — CSV, Excel, SQL, or Google Sheets.",
@@ -57,9 +47,7 @@ for step in steps:
 
 st.markdown("---")
 
-# -------------------
-# FEATURES
-# -------------------
+# Features
 st.subheader("✨ Key Features")
 feature_cols = st.columns(4)
 features = [
@@ -74,13 +62,8 @@ for i, (title, desc) in enumerate(features):
 
 st.markdown("---")
 
-# -------------------
-# FOOTER
-# -------------------
-st.markdown(
-    """
-    ---
-    Built with ❤️ using Streamlit | [GitHub Repo](https://github.com/ummessh/AutoAnalytica) | [Documentation](#)
-    """,
-    unsafe_allow_html=True
-)
+# Footer
+st.markdown("""
+---
+Built with ❤️ using Streamlit | [GitHub Repo](https://github.com/ummessh/AutoAnalytica) | [Documentation](#)
+""", unsafe_allow_html=True)
