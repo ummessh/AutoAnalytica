@@ -4,21 +4,6 @@ import streamlit as st
 st.set_page_config(page_title="AutoAnalytica", page_icon="🔍", layout="wide")
 
 # -------------------
-# HIDE SIDEBAR
-# -------------------
-hide_sidebar_style = """
-    <style>
-        [data-testid="stSidebar"] {
-            display: none;
-        }
-        [data-testid="stSidebarNav"] {
-            display: none;
-        }
-    </style>
-"""
-st.markdown(hide_sidebar_style, unsafe_allow_html=True)
-
-# -------------------
 # MAIN HERO SECTION
 # -------------------
 st.title("Welcome to AutoAnalytica! 🔍")
@@ -34,14 +19,14 @@ st.markdown(
 # -------------------
 col1, col2 = st.columns(2)
 
-# Direct link to pages (matches file names inside `pages/`)
+# Note: Page names must match your `pages/` folder filenames exactly
 upload_page_url = "./Upload%20Data"
 demo_page_url = "./AutoEDA"
 
 with col1:
     st.markdown(
         f'<a href="{upload_page_url}" target="_self">'
-        '<button style="background-color:#4CAF50;color:white;padding:12px 20px;'
+        '<button style="background-color:#4CAF50;color:white;padding:10px 18px;'
         'border:none;border-radius:6px;font-size:16px;cursor:pointer;width:100%;">'
         '📤 Upload Your Dataset</button></a>',
         unsafe_allow_html=True
@@ -50,7 +35,7 @@ with col1:
 with col2:
     st.markdown(
         f'<a href="{demo_page_url}" target="_self">'
-        '<button style="background-color:#2196F3;color:white;padding:12px 20px;'
+        '<button style="background-color:#2196F3;color:white;padding:10px 18px;'
         'border:none;border-radius:6px;font-size:16px;cursor:pointer;width:100%;">'
         '📊 Try Demo Data</button></a>',
         unsafe_allow_html=True
