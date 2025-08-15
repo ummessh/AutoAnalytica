@@ -1,10 +1,26 @@
 import streamlit as st
-from streamlit_extras.switch_page_button import switch_page
 
 # Page config
 st.set_page_config(page_title="AutoAnalytica", page_icon="🔍", layout="wide")
 
+# -------------------
+# HIDE SIDEBAR
+# -------------------
+hide_sidebar_style = """
+    <style>
+        [data-testid="stSidebar"] {
+            display: none;
+        }
+        [data-testid="stSidebarNav"] {
+            display: none;
+        }
+    </style>
+"""
+st.markdown(hide_sidebar_style, unsafe_allow_html=True)
+
+# -------------------
 # MAIN HERO SECTION
+# -------------------
 st.title("Welcome to AutoAnalytica! 🔍")
 st.markdown(
     """
@@ -13,16 +29,32 @@ st.markdown(
     """
 )
 
+# -------------------
 # BUTTON NAVIGATION
+# -------------------
 col1, col2 = st.columns(2)
 
+# Direct link to pages (matches file names inside `pages/`)
+upload_page_url = "./Upload%20Data"
+demo_page_url = "./AutoEDA"
+
 with col1:
-    if st.button("📤 Upload Your Dataset", use_container_width=True):
-        switch_page("Upload Data")  # Must match the page title/file name in `pages/`
+    st.markdown(
+        f'<a href="{upload_page_url}" target="_self">'
+        '<button style="background-color:#4CAF50;color:white;padding:12px 20px;'
+        'border:none;border-radius:6px;font-size:16px;cursor:pointer;width:100%;">'
+        '📤 Upload Your Dataset</button></a>',
+        unsafe_allow_html=True
+    )
 
 with col2:
-    if st.button("📊 Try Demo Data", use_container_width=True):
-        switch_page("AutoEDA")  # Must match the page title/file name in `pages/`
+    st.markdown(
+        f'<a href="{demo_page_url}" target="_self">'
+        '<button style="background-color:#2196F3;color:white;padding:12px 20px;'
+        'border:none;border-radius:6px;font-size:16px;cursor:pointer;width:100%;">'
+        '📊 Try Demo Data</button></a>',
+        unsafe_allow_html=True
+    )
 
 st.markdown("---")
 
@@ -40,7 +72,9 @@ for step in steps:
 
 st.markdown("---")
 
+# -------------------
 # FEATURES
+# -------------------
 st.subheader("✨ Key Features")
 feature_cols = st.columns(4)
 features = [
@@ -55,7 +89,9 @@ for i, (title, desc) in enumerate(features):
 
 st.markdown("---")
 
+# -------------------
 # FOOTER
+# -------------------
 st.markdown(
     """
     ---
