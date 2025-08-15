@@ -1,11 +1,10 @@
 import streamlit as st
+from streamlit_extras.switch_page_button import switch_page
 
 # Page config
 st.set_page_config(page_title="AutoAnalytica", page_icon="🔍", layout="wide")
 
-# -------------------
 # MAIN HERO SECTION
-# -------------------
 st.title("Welcome to AutoAnalytica! 🔍")
 st.markdown(
     """
@@ -14,37 +13,16 @@ st.markdown(
     """
 )
 
-# -------------------
 # BUTTON NAVIGATION
-# -------------------
-# Map of Button Label -> Page Name (matches sidebar label from page title)
-page_links = {
-    "📤 Upload Your Dataset": "Upload Data",
-    "📊 Try Demo Data": "AutoEDA"
-}
-
 col1, col2 = st.columns(2)
 
-for i, (label, page_name) in enumerate(page_links.items()):
-    button_html = f"""
-    <a href="./{page_name.replace(' ', '%20')}" target="_self">
-        <button style="
-            background-color:{'#4CAF50' if i == 0 else '#2196F3'};
-            color:white;
-            padding:10px 18px;
-            border:none;
-            border-radius:6px;
-            font-size:16px;
-            cursor:pointer;
-        ">
-            {label}
-        </button>
-    </a>
-    """
-    if i == 0:
-        col1.markdown(button_html, unsafe_allow_html=True)
-    else:
-        col2.markdown(button_html, unsafe_allow_html=True)
+with col1:
+    if st.button("📤 Upload Your Dataset", use_container_width=True):
+        switch_page("Upload Data")  # Must match the page title/file name in `pages/`
+
+with col2:
+    if st.button("📊 Try Demo Data", use_container_width=True):
+        switch_page("AutoEDA")  # Must match the page title/file name in `pages/`
 
 st.markdown("---")
 
@@ -62,9 +40,7 @@ for step in steps:
 
 st.markdown("---")
 
-# -------------------
 # FEATURES
-# -------------------
 st.subheader("✨ Key Features")
 feature_cols = st.columns(4)
 features = [
@@ -79,13 +55,11 @@ for i, (title, desc) in enumerate(features):
 
 st.markdown("---")
 
-# -------------------
 # FOOTER
-# -------------------
 st.markdown(
     """
     ---
-    Built with ❤️ using Streamlit | [GitHub Repo](https://github.com/) | [Documentation](#)
+    Built with ❤️ using Streamlit | [GitHub Repo](https://github.com/ummessh/AutoAnalytica) | [Documentation](#)
     """,
     unsafe_allow_html=True
 )
