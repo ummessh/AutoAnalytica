@@ -1,34 +1,9 @@
 import streamlit as st
-import os
 
 # Page config
 st.set_page_config(page_title="AutoAnalytica", page_icon="🔍", layout="wide")
 
-# Hide sidebar (optional)
-hide_sidebar_style = """
-    <style>
-        [data-testid="stSidebar"] { display: none; }
-    </style>
-"""
-st.markdown(hide_sidebar_style, unsafe_allow_html=True)
-
-# --- Handle navigation state ---
-if "nav_target" not in st.session_state:
-    st.session_state.nav_target = None
-
-# Redirect if a target page is set
-if st.session_state.nav_target:
-    target_file = f"pages/{st.session_state.nav_target}.py"
-    if os.path.exists(target_file):
-        with open(target_file, "r", encoding="utf-8") as f:
-            code = f.read()
-        exec(code, globals())
-        st.stop()
-    else:
-        st.error(f"Page '{st.session_state.nav_target}' not found.")
-        st.session_state.nav_target = None
-
-# --- Main Hero Section ---
+# Hero section
 st.title("Welcome to AutoAnalytica! 🔍")
 st.markdown("""
 **Your AI-powered data partner — Upload. Explore. Predict. Decide.**  
@@ -40,13 +15,11 @@ col1, col2 = st.columns(2)
 
 with col1:
     if st.button("📤 Upload Your Dataset"):
-        st.session_state.nav_target = "Upload Data"
-        st.rerun()  # updated for new Streamlit
+        st.switch_page("pages/1_Upload_Data.py")  # match your actual file name
 
 with col2:
     if st.button("📊 Try Demo Data"):
-        st.session_state.nav_target = "AutoEDA"
-        st.rerun()  # updated for new Streamlit
+        st.switch_page("pages/2_AutoEDA.py")  # match your actual file name
 
 st.markdown("---")
 
